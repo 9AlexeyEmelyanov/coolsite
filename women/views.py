@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 from .models import *
 
@@ -24,14 +24,14 @@ menu = [
 
 
 def index(request):
-    posts = Women.objects.all()
+    post = Women.objects.all()
     cats = Category.objects.all()
 
-    if len(posts) == 0:
+    if len(post) == 0:
         raise Http404()
 
     context = {
-        'posts': posts,
+        'post': post,
         'cats': cats, 
         'menu': menu, 
         'title': 'Главная страница',
@@ -48,7 +48,10 @@ def about(request):
 
 
 def addpage(request):
-    return HttpResponse("Добавление статьи")
+    return render(request, 'women/addpage.html', {
+        'menu': menu,
+        'title': 'Добавление статьи'
+    })
 
 
 def contact(request):
@@ -59,19 +62,26 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-def show_post(request, post_id):
-    return HttpResponse(f"Отображение статьи с id: {post_id}")
+def show_post(request, post_slug):
+    post = get_object_or_404(Women, slug=post_slug)
+    context = {
+        'post': post,
+        'menu': menu,
+        'title': post.title,
+        'cat_selected': post.slug,
+    }
+    return render(request, 'women/post.html', context=context)
 
 
 def show_category(request, cat_id):
-    posts = Women.objects.filter(category=cat_id)
+    post = Women.objects.filter(category_id=cat_id)
     cats = Category.objects.all()
     
-    if len(posts) == 0:
+    if len(post) == 0:
         raise Http404()
 
     context = {
-        'posts': posts,
+        'post': post,
         'cats': cats,
         'menu': menu,
         'title': 'Отображение по рубрикам',
