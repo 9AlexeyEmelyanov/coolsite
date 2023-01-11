@@ -42,6 +42,3 @@ class Women(models.Model):
         ordering =['-time_create', 'title']
 
     
-
-
-    
