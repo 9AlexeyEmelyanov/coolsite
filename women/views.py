@@ -73,7 +73,7 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
-class ShowPost(DetailView):
+class ShowPost(DataMixin, DetailView):
     model = Women
     template_name = 'women/post.html'
     slug_url_kwarg = 'post_slug'
