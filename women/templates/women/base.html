@@ -1,5 +1,6 @@
 {% load static %}
 {% load women_tags %}
+{% load cache %}
 <!DOCTYPE html>
 <html>
 
@@ -45,8 +46,7 @@
 									{% else %}
 										<li><a href="{% url 'home' %}">Все категории</a></li>
 									{% endif %}
-
-									<!--{% show_categories cat_selected=cat_selected %} -->
+									{% cache 60 sidebar %}
 									{% for c in cats %}
 										{% if c.women__count > 0%}
 											{% if c.pk == cat_selected %}
@@ -55,7 +55,8 @@
 												<li><a href='{{ c.get_absolute_url }}'>{{c.name}}</a></li>
 											{% endif %}
 										{% endif %}
-									{% endfor %}	
+									{% endfor %}
+									{% endcache %}	
 
 								<li class="share">
 									<p>Наш канал</p>
