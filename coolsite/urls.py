@@ -7,7 +7,8 @@ from coolsite import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('women.urls')),
-    path('__debug__/', include('debug_toolbar.urls'))
+    path('__debug__/', include('debug_toolbar.urls')),
+    path('captcha/', include('captcha.urls')),
 ]
 
 if settings.DEBUG:
